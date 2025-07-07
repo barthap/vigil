@@ -26,6 +26,9 @@ pub struct Config {
 
 #[derive(Deserialize)]
 pub struct ConfigServer {
+  #[serde(default = "defaults::server_base_path")]
+  base_path: String,
+
   #[serde(default = "defaults::server_log_level")]
   pub log_level: String,
 
@@ -44,6 +47,24 @@ pub struct ConfigServer {
   pub ui_username: String,
   #[serde(default)]
   pub ui_password: String,
+}
+
+impl ConfigServer {
+  pub fn base_path(&self) -> &str {
+    match self.base_path.as_str() {
+      "/" => "",
+      path if path.ends_with('/') => path.split_at(path.len() - 1).0,
+      other => other,
+    }
+  }
+
+  pub fn base_path_index_root(&self) -> &str {
+    if self.base_path().is_empty() {
+      "/"
+    } else {
+      ""
+    }
+  }
 }
 
 #[derive(Deserialize)]

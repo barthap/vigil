@@ -6,6 +6,8 @@
 
 [server]
 
+base_path = "/"
+
 log_level = "debug"
 inet = "[::1]:8080"
 workers = 4

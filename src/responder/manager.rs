@@ -8,7 +8,9 @@ use actix_web::{
   body::{EitherBody, MessageBody},
   dev::{Service, ServiceRequest, ServiceResponse, Transform},
   middleware::{self, Condition, TrailingSlash},
-  rt, web, App, Error as ActixError, HttpServer,
+  rt,
+  web::{self, scope},
+  App, Error as ActixError, HttpServer,
 };
 use actix_web_httpauth::{
   extractors::{
@@ -46,44 +48,58 @@ pub fn run() {
   );
 
   // Start the HTTP server
+  let base_path = APP_CONF.server.base_path();
+  let root_index_path = APP_CONF.server.base_path_index_root();
+  info!(
+    "HTTP server base path: {base_path}. UI auth enabled: {}",
+    APP_CONF.server.ui_auth_enabled
+  );
+
   let server = HttpServer::new(move || {
     App::new()
+      .wrap(middleware::NormalizePath::new(TrailingSlash::Trim))
       .app_data(web::Data::new(tera.clone()))
       .app_data(ConfigAuth::default().realm(&APP_CONF.branding.page_title))
-      .wrap(middleware::NormalizePath::new(TrailingSlash::Trim))
-      .service(routes::assets_javascripts)
-      .service(routes::assets_stylesheets)
-      .service(routes::assets_images)
-      .service(routes::assets_fonts)
-      .service(routes::badge)
-      .service(routes::robots)
-      .service(routes::status_text)
-      .service(routes::index)
       .service(
-        web::scope("/reporter")
-          .wrap(middleware_reporter_auth.clone())
-          .service(web::resource("/{probe_id}/{node_id}").post(routes::reporter_report))
+        web::scope(base_path)
+          .service(routes::assets_javascripts)
+          .service(routes::assets_stylesheets)
+          .service(routes::assets_images)
+          .service(routes::assets_fonts)
+          .service(routes::badge)
+          .service(routes::robots)
+          .service(routes::status_text)
           .service(
-            web::resource("/{probe_id}/{node_id}/{replica_id}").delete(routes::reporter_flush),
-          ),
-      )
-      .service(
-        web::scope("/manager")
-          .wrap(middleware_manager_auth.clone())
-          .service(web::resource("/announcements").get(routes::manager_announcements))
-          .service(web::resource("/announcement").post(routes::manager_announcement_insert))
-          .service(
-            web::resource("/announcement/{announcement_id}")
-              .delete(routes::manager_announcement_retract),
-          )
-          .service(web::resource("/prober/alerts").get(routes::manager_prober_alerts))
-          .service(
-            web::resource("/prober/alerts/ignored")
-              .get(routes::manager_prober_alerts_ignored_resolve),
+            web::resource(root_index_path)
+              .wrap(ui_auth())
+              .get(routes::index),
           )
           .service(
-            web::resource("/prober/alerts/ignored")
-              .put(routes::manager_prober_alerts_ignored_update),
+            web::scope("/reporter")
+              .wrap(middleware_reporter_auth.clone())
+              .service(web::resource("/{probe_id}/{node_id}").post(routes::reporter_report))
+              .service(
+                web::resource("/{probe_id}/{node_id}/{replica_id}").delete(routes::reporter_flush),
+              ),
+          )
+          .service(
+            web::scope("/manager")
+              .wrap(middleware_manager_auth.clone())
+              .service(web::resource("/announcements").get(routes::manager_announcements))
+              .service(web::resource("/announcement").post(routes::manager_announcement_insert))
+              .service(
+                web::resource("/announcement/{announcement_id}")
+                  .delete(routes::manager_announcement_retract),
+              )
+              .service(web::resource("/prober/alerts").get(routes::manager_prober_alerts))
+              .service(
+                web::resource("/prober/alerts/ignored")
+                  .get(routes::manager_prober_alerts_ignored_resolve),
+              )
+              .service(
+                web::resource("/prober/alerts/ignored")
+                  .put(routes::manager_prober_alerts_ignored_update),
+              ),
           ),
       )
   })

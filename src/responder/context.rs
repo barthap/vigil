@@ -27,6 +27,7 @@ lazy_static! {
     website_url: APP_CONF.branding.website_url.to_owned(),
     support_url: APP_CONF.branding.support_url.to_owned(),
     custom_html: APP_CONF.branding.custom_html.to_owned(),
+    base_path: APP_CONF.server.base_path().to_owned(),
   };
   pub static ref INDEX_ENVIRONMENT: IndexContextEnvironment = IndexContextEnvironment::default();
 }
@@ -92,6 +93,7 @@ pub struct IndexContextConfig {
   pub website_url: SerdeUrl,
   pub support_url: SerdeUrl,
   pub custom_html: Option<String>,
+  pub base_path: String,
 }
 
 #[derive(Serialize)]

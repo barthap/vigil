@@ -2,28 +2,36 @@
 
 @font-face {
   font-family: "Vigil Open Sans Light";
-  src: url("/assets/fonts/open_sans/open_sans_light.woff2") format("woff2"), url("/assets/fonts/open_sans/open_sans_light.woff") format("woff");
+  src:
+    url("../fonts/open_sans/open_sans_light.woff2") format("woff2"),
+    url("../fonts/open_sans/open_sans_light.woff") format("woff");
   font-weight: 100;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Vigil Open Sans Regular";
-  src: url("/assets/fonts/open_sans/open_sans_regular.woff2") format("woff2"), url("/assets/fonts/open_sans/open_sans_regular.woff") format("woff");
+  src:
+    url("../fonts/open_sans/open_sans_regular.woff2") format("woff2"),
+    url("../fonts/open_sans/open_sans_regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Vigil Open Sans Semibold";
-  src: url("/assets/fonts/open_sans/open_sans_semibold.woff2") format("woff2"), url("/assets/fonts/open_sans/open_sans_semibold.woff") format("woff");
+  src:
+    url("../fonts/open_sans/open_sans_semibold.woff2") format("woff2"),
+    url("../fonts/open_sans/open_sans_semibold.woff") format("woff");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Vigil Open Sans Bold";
-  src: url("/assets/fonts/open_sans/open_sans_bold.woff2") format("woff2"), url("/assets/fonts/open_sans/open_sans_bold.woff") format("woff");
+  src:
+    url("../fonts/open_sans/open_sans_bold.woff2") format("woff2"),
+    url("../fonts/open_sans/open_sans_bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
 }
@@ -47,7 +55,7 @@
 body {
   font-family: "Vigil Open Sans Regular", sans-serif;
   font-size: 14px;
-  background: #F7F8FA !important;
+  background: #f7f8fa !important;
   color: rgba(0, 0, 0, 0.95);
 }
 
@@ -156,7 +164,7 @@ a:hover {
 }
 
 .has-tooltip .tooltip .tooltip-value .tooltip-value-text .tooltip-main {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .has-tooltip .tooltip .tooltip-value .tooltip-value-text .tooltip-label {
@@ -170,7 +178,11 @@ a:hover {
   display: block;
 }
 
-.has-tooltip .tooltip .tooltip-value .tooltip-value-details .tooltip-detail:after {
+.has-tooltip
+  .tooltip
+  .tooltip-value
+  .tooltip-value-details
+  .tooltip-detail:after {
   content: "";
   background-color: rgba(255, 255, 255, 0.4);
   vertical-align: sub;
@@ -180,11 +192,19 @@ a:hover {
   display: inline-block;
 }
 
-.has-tooltip .tooltip .tooltip-value .tooltip-value-details .tooltip-detail:last-child:after {
+.has-tooltip
+  .tooltip
+  .tooltip-value
+  .tooltip-value-details
+  .tooltip-detail:last-child:after {
   display: none;
 }
 
-.has-tooltip .tooltip .tooltip-value .tooltip-value-details .tooltip-detail-label {
+.has-tooltip
+  .tooltip
+  .tooltip-value
+  .tooltip-value-details
+  .tooltip-detail-label {
   text-decoration: underline;
 }
 
@@ -194,24 +214,24 @@ a:hover {
 }
 
 .badge.badge-status-healthy.badge-default {
-  background-image: url("/assets/images/badges/icon-healthy-default.svg");
+  background-image: url("../images/badges/icon-healthy-default.svg");
 }
 
 .badge.badge-status-healthy.badge-large {
-  background-image: url("/assets/images/badges/icon-healthy-large.svg");
+  background-image: url("../images/badges/icon-healthy-large.svg");
 }
 
 .status-healthy-background,
 .status-healthy-background-before:before {
-  background-color: #0EB033;
+  background-color: #0eb033;
 }
 
 .status-healthy-color {
-  color: #0EB033;
+  color: #0eb033;
 }
 
 .status-healthy-background-subtle {
-  background-color: rgba(14, 176, 51, 0.10);
+  background-color: rgba(14, 176, 51, 0.1);
 }
 
 .status-healthy-border-subtle {
@@ -219,24 +239,24 @@ a:hover {
 }
 
 .badge-status-sick.badge-default {
-  background-image: url("/assets/images/badges/icon-sick-default.svg");
+  background-image: url("../images/badges/icon-sick-default.svg");
 }
 
 .badge-status-sick.badge-large {
-  background-image: url("/assets/images/badges/icon-sick-large.svg");
+  background-image: url("../images/badges/icon-sick-large.svg");
 }
 
 .status-sick-background,
 .status-sick-background-before:before {
-  background-color: #F18000;
+  background-color: #f18000;
 }
 
 .status-sick-color {
-  color: #F18000;
+  color: #f18000;
 }
 
 .status-sick-background-subtle {
-  background-color: rgba(241, 128, 0, 0.10);
+  background-color: rgba(241, 128, 0, 0.1);
 }
 
 .status-sick-border-subtle {
@@ -244,20 +264,20 @@ a:hover {
 }
 
 .badge-status-dead.badge-default {
-  background-image: url("/assets/images/badges/icon-dead-default.svg");
+  background-image: url("../images/badges/icon-dead-default.svg");
 }
 
 .badge-status-dead.badge-large {
-  background-image: url("/assets/images/badges/icon-dead-large.svg");
+  background-image: url("../images/badges/icon-dead-large.svg");
 }
 
 .status-dead-background,
 .status-dead-background-before:before {
-  background-color: #E10000;
+  background-color: #e10000;
 }
 
 .status-dead-color {
-  color: #E10000;
+  color: #e10000;
 }
 
 .status-dead-background-subtle {
@@ -265,12 +285,12 @@ a:hover {
 }
 
 .status-dead-border-subtle {
-  border-color: rgba(225, 0, 0, 0.10);
+  border-color: rgba(225, 0, 0, 0.1);
 }
 
 .alert-announce-background,
 .alert-announce-background-before:before {
-  background-color: #1972F5;
+  background-color: #1972f5;
 }
 
 @media screen and (max-width: 1020px) {

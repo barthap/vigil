@@ -30,8 +30,7 @@ use crate::prober::status::Status;
 use crate::responder::manager::ui_auth;
 use crate::APP_CONF;
 
-#[get("/", wrap = "ui_auth()")]
-async fn index(tera: Data<Tera>) -> HttpResponse {
+pub async fn index(tera: Data<Tera>) -> HttpResponse {
   // Notice acquire lock in a block to release it ASAP (ie. before template renders)
   let context = {
     IndexContext {

@@ -9,6 +9,10 @@ use std::path::PathBuf;
 
 use super::config::ConfigNotifyReminderBackoffFunction;
 
+pub fn server_base_path() -> String {
+  "/".to_string()
+}
+
 pub fn server_log_level() -> String {
   "error".to_string()
 }
