@@ -18,18 +18,18 @@ pub enum Status {
 
 impl Status {
   pub fn as_str(&self) -> &'static str {
-    match self {
-      &Status::Healthy => "healthy",
-      &Status::Sick => "sick",
-      &Status::Dead => "dead",
+    match *self {
+      Status::Healthy => "healthy",
+      Status::Sick => "sick",
+      Status::Dead => "dead",
     }
   }
 
   pub fn as_icon(&self) -> &'static str {
-    match self {
-      &Status::Dead => "\u{274c}",
-      &Status::Sick => "\u{26a0}",
-      &Status::Healthy => "\u{2705}",
+    match *self {
+      Status::Dead => "\u{274c}",
+      Status::Sick => "\u{26a0}",
+      Status::Healthy => "\u{2705}",
     }
   }
 }

@@ -13,7 +13,7 @@ use super::generic::{GenericNotifier, Notification, DISPATCH_TIMEOUT_SECONDS};
 use crate::config::config::ConfigNotify;
 use crate::APP_CONF;
 
-static TEXT_MESSAGE_TRUNCATED_INDICATOR: &'static str = "[..]";
+static TEXT_MESSAGE_TRUNCATED_INDICATOR: &str = "[..]";
 
 const TEXT_MESSAGE_MAXIMUM_LENGTH: usize = 1000;
 
@@ -33,14 +33,14 @@ impl GenericNotifier for TwilioNotifier {
       // Build up the message text
       let mut message = String::new();
 
-      if notification.startup == true {
+      if notification.startup {
         message.push_str("Startup alert for: ");
-      } else if notification.changed == false {
+      } else if !notification.changed {
         message.push_str("Reminder for: ");
       }
 
       message.push_str(&format!("{}\n", APP_CONF.branding.page_title));
-      message.push_str("\n");
+      message.push('\n');
       message.push_str(&format!("Status: {:?}\n", notification.status));
       message.push_str(&format!("Nodes: {}\n", &notification.replicas.join(", ")));
       message.push_str(&format!("Time: {}\n", &notification.time));
@@ -72,7 +72,7 @@ impl GenericNotifier for TwilioNotifier {
 
         // Submit message to Twilio
         let response = TWILIO_HTTP_CLIENT
-          .post(&generate_api_url(&twilio.account_sid))
+          .post(generate_api_url(&twilio.account_sid))
           .basic_auth(
             twilio.account_sid.as_str(),
             Some(twilio.auth_token.as_str()),
@@ -82,7 +82,7 @@ impl GenericNotifier for TwilioNotifier {
 
         // Check for any failure
         if let Ok(response_inner) = response {
-          if response_inner.status().is_success() != true {
+          if !response_inner.status().is_success() {
             has_sub_delivery_failure = true;
           }
         } else {
@@ -90,7 +90,7 @@ impl GenericNotifier for TwilioNotifier {
         }
       }
 
-      if has_sub_delivery_failure == true {
+      if has_sub_delivery_failure {
         return Err(true);
       }
 

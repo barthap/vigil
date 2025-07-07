@@ -45,7 +45,7 @@ impl GenericNotifier for ZulipNotifier {
       };
 
       // Build message
-      let mut message_text = if notification.startup == true {
+      let mut message_text = if notification.startup {
         format!("Status started up, as: {}.", status_text)
       } else if notification.changed {
         format!("Status changed to: {}.", status_text)
@@ -53,7 +53,7 @@ impl GenericNotifier for ZulipNotifier {
         format!("Status is still: {}.", status_text)
       };
 
-      if notification.replicas.len() > 0 {
+      if !notification.replicas.is_empty() {
         let nodes_label = notification.replicas.join(", ");
         let nodes_label_titled = format!("\n **Nodes**: *{}*.", nodes_label);
 
@@ -82,7 +82,7 @@ impl GenericNotifier for ZulipNotifier {
         .send();
 
       if let Ok(response_inner) = response {
-        if response_inner.status().is_success() == true {
+        if response_inner.status().is_success() {
           return Ok(());
         } else {
           warn!(

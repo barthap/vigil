@@ -29,7 +29,7 @@ impl<'de> Deserialize<'de> for Regex {
   {
     struct RegexVisitor;
 
-    impl<'de> Visitor<'de> for RegexVisitor {
+    impl Visitor<'_> for RegexVisitor {
       type Value = Regex;
 
       fn expecting(&self, format: &mut fmt::Formatter) -> fmt::Result {

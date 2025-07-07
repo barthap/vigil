@@ -30,9 +30,9 @@ impl GenericNotifier for GotifyNotifier {
       // Build up the message text
       let mut message = String::new();
 
-      if notification.startup == true {
+      if notification.startup {
         message.push_str("This is a startup alert.\n\n");
-      } else if notification.changed == false {
+      } else if !notification.changed {
         message.push_str("This is a reminder.\n\n");
       }
 
@@ -59,7 +59,7 @@ impl GenericNotifier for GotifyNotifier {
       params.insert("title", &APP_CONF.branding.page_title);
       params.insert("message", &message);
 
-      if notification.changed == false {
+      if !notification.changed {
         params.insert("priority", "10");
       }
 
@@ -67,7 +67,7 @@ impl GenericNotifier for GotifyNotifier {
       let response = GOTIFY_HTTP_CLIENT.post(&url).form(&params).send();
 
       if let Ok(response_inner) = response {
-        if response_inner.status().is_success() != true {
+        if !response_inner.status().is_success() {
           return Err(true);
         }
       } else {

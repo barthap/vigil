@@ -28,12 +28,12 @@ pub trait GenericNotifier {
   fn name() -> &'static str;
 }
 
-impl<'a> Notification<'a> {
+impl Notification<'_> {
   pub fn dispatch<N: GenericNotifier>(
     notify: &ConfigNotify,
     notification: &Notification,
   ) -> Result<(), bool> {
-    if N::can_notify(notify, notification) == true {
+    if N::can_notify(notify, notification) {
       info!(
         "dispatch {} notification for status: {:?} and replicas: {:?}",
         N::name(),
@@ -54,7 +54,7 @@ impl<'a> Notification<'a> {
         }
 
         // Attempt notification dispatch
-        if N::attempt(notify, notification).is_ok() == true {
+        if N::attempt(notify, notification).is_ok() {
           debug!("dispatched notification to provider: {}", N::name());
 
           return Ok(());
@@ -74,10 +74,6 @@ impl<'a> Notification<'a> {
   pub fn expected(&self, reminders_only: bool) -> bool {
     // Notification may not be expected if status has changed, but we only want to receive \
     //   reminders on this specific notifier channel.
-    if reminders_only == false || (reminders_only == true && self.changed == false) {
-      true
-    } else {
-      false
-    }
+    !reminders_only || (reminders_only && !self.changed)
   }
 }

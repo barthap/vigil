@@ -50,15 +50,15 @@ impl GenericNotifier for SlackNotifier {
       let mut nodes_label = String::new();
 
       // Build message
-      let message_text = if notification.startup == true {
+      let message_text = if notification.startup {
         format!("Status started up, as: *{}*.", notification.status.as_str())
-      } else if notification.changed == true {
+      } else if notification.changed {
         format!("Status changed to: *{}*.", notification.status.as_str())
       } else {
         format!("Status is still: *{}*.", notification.status.as_str())
       };
 
-      let payload_text = if slack.mention_channel == true {
+      let payload_text = if slack.mention_channel {
         format!("<!channel> {}", &message_text)
       } else {
         message_text.to_owned()
@@ -72,12 +72,12 @@ impl GenericNotifier for SlackNotifier {
 
       let mut attachment = SlackPayloadAttachment {
         fallback: message_text,
-        color: status_to_color(&notification.status),
+        color: status_to_color(notification.status),
         fields: Vec::new(),
       };
 
       // Append attachment fields
-      if notification.replicas.len() > 0 {
+      if !notification.replicas.is_empty() {
         nodes_label.push_str(&notification.replicas.join(", "));
 
         let nodes_label_titled = format!(" Nodes: *{}*.", nodes_label);
@@ -120,7 +120,7 @@ impl GenericNotifier for SlackNotifier {
         .send();
 
       if let Ok(response_inner) = response {
-        if response_inner.status().is_success() == true {
+        if response_inner.status().is_success() {
           return Ok(());
         }
       }
@@ -145,9 +145,9 @@ impl GenericNotifier for SlackNotifier {
 }
 
 fn status_to_color(status: &Status) -> &'static str {
-  match status {
-    &Status::Healthy => "good",
-    &Status::Sick => "warning",
-    &Status::Dead => "danger",
+  match *status {
+    Status::Healthy => "good",
+    Status::Sick => "warning",
+    Status::Dead => "danger",
   }
 }

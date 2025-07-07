@@ -6,7 +6,6 @@
 
 use std::sync::Arc;
 use std::sync::RwLock;
-use time;
 use time::format_description::FormatItem;
 
 lazy_static! {

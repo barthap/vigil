@@ -21,7 +21,7 @@ lazy_static! {
     .unwrap();
 }
 
-static TELEGRAM_API_BASE_URL: &'static str = "https://api.telegram.org";
+static TELEGRAM_API_BASE_URL: &str = "https://api.telegram.org";
 
 pub struct TelegramNotifier;
 
@@ -44,13 +44,13 @@ impl GenericNotifier for TelegramNotifier {
   fn attempt(notify: &ConfigNotify, notification: &Notification) -> Result<(), bool> {
     if let Some(ref telegram) = notify.telegram {
       // Build message
-      let mut message = if notification.startup == true {
+      let mut message = if notification.startup {
         format!(
           "{} Status started up, as: *{}*.\n",
           notification.status.as_icon(),
           notification.status.as_str().to_uppercase()
         )
-      } else if notification.changed == true {
+      } else if notification.changed {
         format!(
           "{} Status changed to: *{}*.\n",
           notification.status.as_icon(),
@@ -92,12 +92,12 @@ impl GenericNotifier for TelegramNotifier {
       // Generate Telegram chat identifier
       let chat_id = match &telegram.chat_id.parse::<u64>() {
         Ok(user_chat_id) => TelegramChatID::User(*user_chat_id),
-        Err(_) => TelegramChatID::Group(&telegram.chat_id.as_str()),
+        Err(_) => TelegramChatID::Group(telegram.chat_id.as_str()),
       };
 
       // Build payload
       let payload = TelegramPayload {
-        chat_id: chat_id,
+        chat_id,
         text: message,
         parse_mode: "markdown",
         disable_web_page_preview: true,
@@ -117,7 +117,7 @@ impl GenericNotifier for TelegramNotifier {
 
       // Check for any failure
       if let Ok(response_inner) = response {
-        if response_inner.status().is_success() == true {
+        if response_inner.status().is_success() {
           return Ok(());
         }
       }

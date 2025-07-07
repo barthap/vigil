@@ -28,9 +28,9 @@ lazy_static! {
   ];
 }
 
-static MATRIX_MESSAGE_BODY: &'static str = "You received a Vigil alert.";
-static MATRIX_MESSAGE_TYPE: &'static str = "m.text";
-static MATRIX_MESSAGE_FORMAT: &'static str = "org.matrix.custom.html";
+static MATRIX_MESSAGE_BODY: &str = "You received a Vigil alert.";
+static MATRIX_MESSAGE_TYPE: &str = "m.text";
+static MATRIX_MESSAGE_FORMAT: &str = "org.matrix.custom.html";
 
 pub struct MatrixNotifier;
 
@@ -63,7 +63,7 @@ impl GenericNotifier for MatrixNotifier {
       let response = MATRIX_HTTP_CLIENT.post(&url).json(&params).send();
 
       if let Ok(response_inner) = response {
-        if response_inner.status().is_success() != true {
+        if !response_inner.status().is_success() {
           return Err(true);
         }
       } else {
@@ -90,9 +90,9 @@ impl GenericNotifier for MatrixNotifier {
 }
 
 fn format_status(notification: &Notification) -> String {
-  let msg = if notification.startup == true {
+  let msg = if notification.startup {
     "Status started up, as"
-  } else if notification.changed == true {
+  } else if notification.changed {
     "Status changed to"
   } else {
     "Status is still"

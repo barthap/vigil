@@ -226,7 +226,7 @@ fn proceed_replica_probe_poll(
   let start_time = SystemTime::now();
 
   let (is_up, poll_duration) = match replica_url {
-    &ReplicaURL::ICMP(ref host) => proceed_replica_probe_poll_icmp(host),
+    ReplicaURL::ICMP(host) => proceed_replica_probe_poll_icmp(host),
     &ReplicaURL::TCP(ref host, port) => proceed_replica_probe_poll_tcp(host, port),
     &ReplicaURL::HTTP(ref url) | &ReplicaURL::HTTPS(ref url) => {
       proceed_replica_probe_poll_http(url, http_headers, http_method, http_body, body_match)
@@ -240,7 +240,7 @@ fn proceed_replica_probe_poll(
       .unwrap_or(Duration::from_secs(0)),
   };
 
-  if is_up == true {
+  if is_up {
     // Probe reports as sick?
     if duration_latency >= Duration::from_secs(APP_CONF.metrics.poll_delay_sick) {
       return (Status::Sick, duration_latency);
@@ -480,7 +480,7 @@ fn proceed_replica_probe_poll_http(
         && status_code < APP_CONF.metrics.poll_http_status_healthy_below
       {
         // Check response body for match? (if configured)
-        if let &Some(ref body_match_regex) = body_match {
+        if let Some(body_match_regex) = body_match {
           if let Ok(text) = response_inner.text() {
             debug!(
               "checking prober poll response text for http target: {} for any match: {}",
@@ -488,7 +488,7 @@ fn proceed_replica_probe_poll_http(
             );
 
             // Doesnt match? Consider as DOWN.
-            if body_match_regex.is_match(&text) == false {
+            if !body_match_regex.is_match(&text) {
               return (false, None);
             }
           } else {
@@ -706,10 +706,7 @@ fn dispatch_replicas_in_threads(replicas: Vec<ProbeReplica>, parallelism: u16) {
 
     for replicas_chunk in replicas.chunks(chunk_size) {
       // Re-map list of chunked replicas so that they can be passed to their thread
-      let replicas_chunk: Vec<ProbeReplica> = replicas_chunk
-        .iter()
-        .map(|replica| replica.clone())
-        .collect();
+      let replicas_chunk: Vec<ProbeReplica> = replicas_chunk.to_vec();
 
       // Append probing chunk into its own synchronous thread
       prober_threads.push(thread::spawn(move || {
@@ -773,7 +770,7 @@ fn dispatch_plugins_rabbitmq(
         // Check once again? (the queue can be seen as loaded from check #1, but if we \
         //   check again a few milliseconds later, it will actually be empty; so not loaded)
         // Notice: this prevents false-positive 'sick' statuses.
-        if rabbitmq_queue_load.0 == true {
+        if rabbitmq_queue_load.0 {
           if let Some(retry_delay) = rabbitmq_config.queue_loaded_retry_delay {
             debug!(
               "rabbitmq queue is loaded, checking once again in {}ms: {}:{} [{}]",
@@ -812,8 +809,8 @@ fn dispatch_plugins_rabbitmq(
                 // Store RabbitMQ metrics
                 if let Some((queue_ready, queue_nack)) = rabbitmq_queue_load.2 {
                   replica.metrics.rabbitmq = Some(ServiceStatesProbeNodeReplicaMetricsRabbitMQ {
-                    queue_ready: queue_ready,
-                    queue_nack: queue_nack,
+                    queue_ready,
+                    queue_nack,
                   });
                 } else {
                   replica.metrics.rabbitmq = None

@@ -64,7 +64,7 @@ pub fn handle_load(
 
       load_queue = ServiceStatesProbeNodeReplicaLoadQueue::default();
 
-      if let Some(ref replica) = node.replicas.get(replica_id) {
+      if let Some(replica) = node.replicas.get(replica_id) {
         status = replica.status.to_owned();
         metrics = replica.metrics.to_owned();
 
