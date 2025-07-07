@@ -42,7 +42,7 @@ function release_for_architecture {
         cross build --target "$2" --release && \
         mkdir ./vigil && \
         cp -p "target/$2/release/vigil" ./vigil/ && \
-        cp -r ./config.cfg ./res vigil/ && \
+        cp -r ./config.toml ./res vigil/ && \
         tar --owner=0 --group=0 -czvf "$final_tar" ./vigil && \
         rm -r ./vigil/
     release_result=$?

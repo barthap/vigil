@@ -114,7 +114,7 @@ fn make_app_args() -> AppArgs {
                 .short('c')
                 .long("config")
                 .help("Path to configuration file")
-                .default_value("./config.cfg"),
+                .default_value("./config.toml"),
         )
         .get_matches();
 

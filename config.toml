@@ -1,7 +1,7 @@
 # Vigil
 # Microservices Status Page
 # Configuration file
-# Example: https://github.com/valeriansaliou/vigil/blob/master/config.cfg
+# Example: https://github.com/barthap/vigil/blob/master/config.toml
 
 
 [server]
