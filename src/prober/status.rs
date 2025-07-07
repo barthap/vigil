@@ -6,30 +6,30 @@
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub enum Status {
-    #[serde(rename = "healthy")]
-    Healthy,
+  #[serde(rename = "healthy")]
+  Healthy,
 
-    #[serde(rename = "sick")]
-    Sick,
+  #[serde(rename = "sick")]
+  Sick,
 
-    #[serde(rename = "dead")]
-    Dead,
+  #[serde(rename = "dead")]
+  Dead,
 }
 
 impl Status {
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            &Status::Healthy => "healthy",
-            &Status::Sick => "sick",
-            &Status::Dead => "dead",
-        }
+  pub fn as_str(&self) -> &'static str {
+    match self {
+      &Status::Healthy => "healthy",
+      &Status::Sick => "sick",
+      &Status::Dead => "dead",
     }
+  }
 
-    pub fn as_icon(&self) -> &'static str {
-        match self {
-            &Status::Dead => "\u{274c}",
-            &Status::Sick => "\u{26a0}",
-            &Status::Healthy => "\u{2705}",
-        }
+  pub fn as_icon(&self) -> &'static str {
+    match self {
+      &Status::Dead => "\u{274c}",
+      &Status::Sick => "\u{26a0}",
+      &Status::Healthy => "\u{2705}",
     }
+  }
 }

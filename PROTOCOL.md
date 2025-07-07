@@ -1,5 +1,4 @@
-Vigil Protocol
-==============
+# Vigil Protocol
 
 # Vigil Reporter HTTP API
 
@@ -11,13 +10,13 @@ Vigil Protocol
 
 Where:
 
-* `node_id`: The parent node of the reporting replica
-* `probe_id`: The parent probe of the node
+- `node_id`: The parent node of the reporting replica
+- `probe_id`: The parent probe of the node
 
 **Request headers:**
 
-* Add an `Authorization` header with a `Basic` authentication where the password is your configured `reporter_token`.
-* Set the `Content-Type` to `application/json; charset=utf-8`, and ensure you submit the request data as UTF-8.
+- Add an `Authorization` header with a `Basic` authentication where the password is your configured `reporter_token`.
+- Set the `Content-Type` to `application/json; charset=utf-8`, and ensure you submit the request data as UTF-8.
 
 **Request data:**
 
@@ -29,18 +28,18 @@ Adjust the request data to your replica context and send it as `HTTP POST`:
   "interval": 30,
 
   "load": {
-    "cpu": 0.30,
-    "ram": 0.80
+    "cpu": 0.3,
+    "ram": 0.8
   }
 }
 ```
 
 Where:
 
-* `replica`: The replica unique identifier (eg. the server LAN IP)
-* `interval`: The push interval (in seconds)
-* `load.cpu`: The general CPU load, from `0.00` to `1.00` (can be more than `1.00` if the CPU is overloaded)
-* `load.ram`: The general RAM load, from `0.00` to `1.00`
+- `replica`: The replica unique identifier (eg. the server LAN IP)
+- `interval`: The push interval (in seconds)
+- `load.cpu`: The general CPU load, from `0.00` to `1.00` (can be more than `1.00` if the CPU is overloaded)
+- `load.ram`: The general RAM load, from `0.00` to `1.00`
 
 ## 2️⃣ Flush a replica
 
@@ -50,13 +49,13 @@ Where:
 
 Where:
 
-* `node_id`: The parent node of the reporting replica
-* `probe_id`: The parent probe of the node
-* `replica_id`: The replica unique identifier (eg. the server LAN IP)
+- `node_id`: The parent node of the reporting replica
+- `probe_id`: The parent probe of the node
+- `replica_id`: The replica unique identifier (eg. the server LAN IP)
 
 **Request headers:**
 
-* Add an `Authorization` header with a `Basic` authentication where the password is your configured `reporter_token`.
+- Add an `Authorization` header with a `Basic` authentication where the password is your configured `reporter_token`.
 
 ---
 
@@ -70,7 +69,7 @@ Where:
 
 **Request headers:**
 
-* Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
+- Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
 
 ## 2️⃣ Insert a new announcement
 
@@ -80,8 +79,8 @@ Where:
 
 **Request headers:**
 
-* Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
-* Set the `Content-Type` to `application/json; charset=utf-8`, and ensure you submit the request data as UTF-8.
+- Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
+- Set the `Content-Type` to `application/json; charset=utf-8`, and ensure you submit the request data as UTF-8.
 
 **Request data:**
 
@@ -96,8 +95,8 @@ Adjust the request data to your announcement and send it as `HTTP POST`:
 
 Where:
 
-* `title`: The title for the announcement
-* `text`: The description text for the announcement (can be multi-line)
+- `title`: The title for the announcement
+- `text`: The description text for the announcement (can be multi-line)
 
 ## 3️⃣ Retract a published announcement
 
@@ -107,11 +106,11 @@ Where:
 
 Where:
 
-* `announcement_id`: The announcement identifier to be removed
+- `announcement_id`: The announcement identifier to be removed
 
 **Request headers:**
 
-* Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
+- Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
 
 ## 4️⃣ List prober alerts
 
@@ -121,7 +120,7 @@ Where:
 
 **Request headers:**
 
-* Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
+- Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
 
 ## 5️⃣ Resolve ignore rules for prober alerts
 
@@ -131,7 +130,7 @@ Where:
 
 **Request headers:**
 
-* Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
+- Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
 
 ## 6️⃣ Update ignore rules for prober alerts
 
@@ -141,8 +140,8 @@ Where:
 
 **Request headers:**
 
-* Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
-* Set the `Content-Type` to `application/json; charset=utf-8`, and ensure you submit the request data as UTF-8.
+- Add an `Authorization` header with a `Basic` authentication where the password is your configured `manager_token`.
+- Set the `Content-Type` to `application/json; charset=utf-8`, and ensure you submit the request data as UTF-8.
 
 **Request data:**
 
@@ -156,4 +155,4 @@ Adjust the request data to your announcement and send it as `HTTP PUT`:
 
 Where:
 
-* `reminders_seconds`: The number of seconds during which downtime reminders should not be sent anymore (skipped)
+- `reminders_seconds`: The number of seconds during which downtime reminders should not be sent anymore (skipped)

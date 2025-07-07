@@ -6,15 +6,15 @@
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub enum Mode {
-    #[serde(rename = "poll")]
-    Poll,
+  #[serde(rename = "poll")]
+  Poll,
 
-    #[serde(rename = "push")]
-    Push,
+  #[serde(rename = "push")]
+  Push,
 
-    #[serde(rename = "script")]
-    Script,
+  #[serde(rename = "script")]
+  Script,
 
-    #[serde(rename = "local")]
-    Local,
+  #[serde(rename = "local")]
+  Local,
 }
