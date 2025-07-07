@@ -86,6 +86,7 @@ smtp_port = 587
 smtp_username = "user-access"
 smtp_password = "user-password"
 smtp_encrypt = false
+# smtp_cert_file = "./certs/tls_ca_cert.chain.pem"
 
 [notify.twilio]
 

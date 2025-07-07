@@ -200,6 +200,7 @@ pub struct ConfigNotifyEmail {
 
     #[serde(default = "defaults::notify_email_smtp_encrypt")]
     pub smtp_encrypt: bool,
+    pub smtp_cert_file: Option<String>,
 
     #[serde(default = "defaults::notify_generic_reminders_only")]
     pub reminders_only: bool,
