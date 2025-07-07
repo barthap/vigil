@@ -1,5 +1,21 @@
 # Vigil
 
+This is a fork of [valeriansaliou/vigil](https://github.com/valeriansaliou/vigil/) with the following changes:
+
+- Renamed `config.cfg` to `config.toml`
+- Improved logging formatting
+- Improved environment variable substitution which doesn't crash when env vars contain invalid characters
+- Added support for replica "labels" - if present, they're displayed on status page instead of numbers 1,2,3
+- E-mail notifs: Added ability to provide path to TLS certificate file (CA PEM)
+- HTTP web server features:
+  - Support for custom status page base path, e.g. `/status`
+  - Possibility to hide status page behind HTTP Basic auth, in case you want to keep it from public
+- Changed formatting and fixed Clippy warnings
+
+See [branch comparison](https://github.com/valeriansaliou/vigil/compare/master...barthap:vigil:master) for all changes.
+
+## Original upstream README
+
 [![Test and Build](https://github.com/valeriansaliou/vigil/workflows/Test%20and%20Build/badge.svg?branch=master)](https://github.com/valeriansaliou/vigil/actions?query=workflow%3A%22Test+and+Build%22) [![Build and Release](https://github.com/valeriansaliou/vigil/workflows/Build%20and%20Release/badge.svg)](https://github.com/valeriansaliou/vigil/actions?query=workflow%3A%22Build+and+Release%22) [![dependency status](https://deps.rs/repo/github/valeriansaliou/vigil/status.svg)](https://deps.rs/repo/github/valeriansaliou/vigil) [![Buy Me A Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg)](https://www.buymeacoffee.com/valeriansaliou)
 
 **Microservices Status Page. Monitors a distributed infrastructure and sends alerts (Slack, SMS, etc.).**
