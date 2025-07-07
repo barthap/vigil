@@ -13,6 +13,10 @@ workers = 4
 manager_token = "REPLACE_THIS_WITH_A_VERY_SECRET_KEY"
 reporter_token = "REPLACE_THIS_WITH_A_SECRET_KEY"
 
+ui_auth_enabled = false
+ui_username = "admin"
+ui_password = "1234"
+
 [assets]
 
 path = "./res/assets/"

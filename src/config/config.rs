@@ -37,6 +37,13 @@ pub struct ConfigServer {
 
     pub manager_token: String,
     pub reporter_token: String,
+
+    #[serde(default)]
+    pub ui_auth_enabled: bool,
+    #[serde(default)]
+    pub ui_username: String,
+    #[serde(default)]
+    pub ui_password: String,
 }
 
 #[derive(Deserialize)]

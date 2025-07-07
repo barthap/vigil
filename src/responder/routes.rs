@@ -27,9 +27,10 @@ use crate::prober::report::{
     handle_load as handle_load_report, HandleFlushError, HandleHealthError, HandleLoadError,
 };
 use crate::prober::status::Status;
+use crate::responder::manager::ui_auth;
 use crate::APP_CONF;
 
-#[get("/")]
+#[get("/", wrap = "ui_auth()")]
 async fn index(tera: Data<Tera>) -> HttpResponse {
     // Notice acquire lock in a block to release it ASAP (ie. before template renders)
     let context = {
@@ -56,7 +57,7 @@ async fn robots() -> Option<NamedFile> {
     NamedFile::open(APP_CONF.assets.path.join("public").join("robots.txt")).ok()
 }
 
-#[get("/status/text")]
+#[get("/status/text", wrap = "ui_auth()")]
 async fn status_text() -> &'static str {
     &PROBER_STORE.read().unwrap().states.status.as_str()
 }
