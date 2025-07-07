@@ -16,7 +16,21 @@ impl log::Log for ConfigLogger {
 
     fn log(&self, record: &Record) {
         if self.enabled(record.metadata()) {
-            println!("({}) - {}", record.level(), record.args());
+            use nu_ansi_term::Color as C;
+            let level = record.level();
+            let level_color = match level {
+                Level::Error => C::Red,
+                Level::Warn => C::Yellow,
+                Level::Info => C::Green,
+                Level::Debug => C::Blue,
+                Level::Trace => C::Cyan,
+            };
+            println!(
+                "[{}] {}: {}",
+                level_color.paint(level.as_str()),
+                C::DarkGray.paint(record.module_path().unwrap_or("")),
+                record.args()
+            );
         }
     }
 
