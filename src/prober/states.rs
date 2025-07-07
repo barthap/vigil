@@ -51,6 +51,7 @@ pub struct ServiceStatesProbeNode {
 pub struct ServiceStatesProbeNodeReplica {
     pub status: Status,
     pub url: Option<ReplicaURL>,
+    pub label: Option<String>,
     pub script: Option<String>,
     pub metrics: ServiceStatesProbeNodeReplicaMetrics,
     pub load: Option<ServiceStatesProbeNodeReplicaLoad>,

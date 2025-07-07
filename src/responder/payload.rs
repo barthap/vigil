@@ -12,6 +12,7 @@ pub struct ReporterRequestPayload {
     pub interval: u64,
     pub health: Option<HealthStatus>,
     pub load: Option<ReporterRequestPayloadLoad>,
+    pub replica_label: Option<String>,
 }
 
 #[derive(Deserialize)]

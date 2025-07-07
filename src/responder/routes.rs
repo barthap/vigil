@@ -8,7 +8,6 @@ use actix_files::NamedFile;
 use actix_web::{get, web, web::Data, web::Json, HttpResponse};
 use std::time::{Duration, SystemTime};
 use tera::Tera;
-use time;
 use uuid::Uuid;
 
 use super::announcements::{
@@ -37,8 +36,8 @@ async fn index(tera: Data<Tera>) -> HttpResponse {
         IndexContext {
             states: &PROBER_STORE.read().unwrap().states,
             announcements: &ANNOUNCEMENTS_STORE.read().unwrap().announcements,
-            environment: &*INDEX_ENVIRONMENT,
-            config: &*INDEX_CONFIG,
+            environment: &INDEX_ENVIRONMENT,
+            config: &INDEX_CONFIG,
         }
     };
     let render = tera.render(
@@ -146,6 +145,7 @@ pub async fn reporter_report(
             &probe_id,
             &node_id,
             &data.replica,
+            data.replica_label.as_ref(),
             data.interval,
             load.cpu,
             load.ram,
@@ -162,7 +162,14 @@ pub async fn reporter_report(
         }
     } else if let Some(ref health) = data.health {
         // Health reports should come for 'local' nodes only
-        match handle_health_report(&probe_id, &node_id, &data.replica, data.interval, health) {
+        match handle_health_report(
+            &probe_id,
+            &node_id,
+            &data.replica,
+            data.replica_label.as_ref(),
+            data.interval,
+            health,
+        ) {
             Ok(_) => HttpResponse::Ok().finish(),
             Err(HandleHealthError::WrongMode) => HttpResponse::PreconditionFailed().finish(),
             Err(HandleHealthError::NotFound) => HttpResponse::NotFound().finish(),
@@ -212,7 +219,7 @@ pub async fn manager_announcement_insert(
     data: Json<ManagerAnnouncementInsertRequestPayload>,
 ) -> HttpResponse {
     // Validate data
-    if data.title.len() > 0 && data.text.len() > 0 {
+    if !data.title.is_empty() && !data.text.is_empty() {
         // Generate unique identifier and insert in announcements
         let id = Uuid::new_v4().hyphenated().to_string();
 
@@ -230,7 +237,7 @@ pub async fn manager_announcement_insert(
             ),
         });
 
-        HttpResponse::Ok().json(ManagerAnnouncementInsertResponsePayload { id: id })
+        HttpResponse::Ok().json(ManagerAnnouncementInsertResponsePayload { id })
     } else {
         // Announcement data is invalid
         HttpResponse::BadRequest().finish()
@@ -303,9 +310,7 @@ pub async fn manager_prober_alerts_ignored_resolve() -> HttpResponse {
         })
         .map(|reminder_ignore_duration_since| reminder_ignore_duration_since.as_secs() as u16);
 
-    HttpResponse::Ok().json(ManagerProberAlertsIgnoredResolveResponsePayload {
-        reminders_seconds: reminders_seconds,
-    })
+    HttpResponse::Ok().json(ManagerProberAlertsIgnoredResolveResponsePayload { reminders_seconds })
 }
 
 // Notice: manager prober alerts ignored update route is managed in manager due to authentication \

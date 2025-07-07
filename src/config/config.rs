@@ -328,7 +328,7 @@ pub struct ConfigProbeServiceNode {
     pub id: String,
     pub label: String,
     pub mode: Mode,
-    pub replicas: Option<Vec<String>>,
+    pub replicas: Option<Vec<ConfigProbeServiceNodeReplica>>,
     pub scripts: Option<Vec<String>>,
 
     #[serde(default)]
@@ -366,4 +366,34 @@ pub enum ConfigProbeServiceNodeHTTPMethod {
 
     #[serde(rename = "PATCH")]
     Patch,
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+pub enum ConfigProbeServiceNodeReplica {
+    Simple(String),
+    Extended { url: String, label: String },
+}
+
+impl ConfigProbeServiceNodeReplica {
+    pub fn url(&self) -> &str {
+        match self {
+            Self::Simple(url) => url.as_str(),
+            Self::Extended { url, .. } => url.as_str(),
+        }
+    }
+
+    pub fn label(&self) -> Option<&String> {
+        match self {
+            Self::Extended { label, .. } => Some(label),
+            _ => None,
+        }
+    }
+}
+
+impl std::fmt::Display for ConfigProbeServiceNodeReplica {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(self.url())?;
+        Ok(())
+    }
 }

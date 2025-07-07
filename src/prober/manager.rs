@@ -897,7 +897,8 @@ pub fn initialize_store() {
                         service.id, node.id, replica
                     );
 
-                    let replica_url = ReplicaURL::parse_from(replica).expect("invalid replica url");
+                    let replica_url =
+                        ReplicaURL::parse_from(replica.url()).expect("invalid replica url");
 
                     probe_node.replicas.insert(
                         replica.to_string(),
@@ -908,6 +909,7 @@ pub fn initialize_store() {
                             metrics: ServiceStatesProbeNodeReplicaMetrics::default(),
                             load: None,
                             report: None,
+                            label: replica.label().cloned(),
                         },
                     );
                 }
@@ -934,6 +936,7 @@ pub fn initialize_store() {
                             metrics: ServiceStatesProbeNodeReplicaMetrics::default(),
                             load: None,
                             report: None,
+                            label: None,
                         },
                     );
                 }

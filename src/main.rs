@@ -39,10 +39,10 @@ struct AppArgs {
     config: String,
 }
 
-pub static THREAD_NAME_PROBER_POLL: &'static str = "vigil-prober-poll";
-pub static THREAD_NAME_PROBER_SCRIPT: &'static str = "vigil-prober-script";
-pub static THREAD_NAME_AGGREGATOR: &'static str = "vigil-aggregator";
-pub static THREAD_NAME_RESPONDER: &'static str = "vigil-responder";
+pub static THREAD_NAME_PROBER_POLL: &str = "vigil-prober-poll";
+pub static THREAD_NAME_PROBER_SCRIPT: &str = "vigil-prober-script";
+pub static THREAD_NAME_AGGREGATOR: &str = "vigil-aggregator";
+pub static THREAD_NAME_RESPONDER: &str = "vigil-responder";
 
 macro_rules! gen_spawn_managed {
     ($name:expr, $method:ident, $thread_name:ident, $managed_fn:ident) => {
@@ -132,9 +132,8 @@ fn ensure_states() {
     let (_, _) = (APP_ARGS.deref(), APP_CONF.deref());
 
     // Ensure assets path exists
-    assert_eq!(
+    assert!(
         APP_CONF.assets.path.exists(),
-        true,
         "assets directory not found: {:?}",
         APP_CONF.assets.path
     );

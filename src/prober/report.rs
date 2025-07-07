@@ -36,6 +36,7 @@ pub fn handle_load(
     probe_id: &str,
     node_id: &str,
     replica_id: &str,
+    replica_label: Option<&String>,
     interval: u64,
     load_cpu: f32,
     load_ram: f32,
@@ -86,10 +87,11 @@ pub fn handle_load(
             node.replicas.insert(
                 replica_id.to_string(),
                 ServiceStatesProbeNodeReplica {
-                    status: status,
+                    status,
+                    label: replica_label.cloned(),
                     url: None,
                     script: None,
-                    metrics: metrics,
+                    metrics,
                     load: Some(ServiceStatesProbeNodeReplicaLoad {
                         cpu: load_cpu,
                         ram: load_ram,
@@ -118,6 +120,7 @@ pub fn handle_health(
     probe_id: &str,
     node_id: &str,
     replica_id: &str,
+    replica_label: Option<&String>,
     interval: u64,
     health: &Status,
 ) -> Result<(), HandleHealthError> {
@@ -140,6 +143,7 @@ pub fn handle_health(
                 replica_id.to_string(),
                 ServiceStatesProbeNodeReplica {
                     status: health.to_owned(),
+                    label: replica_label.cloned(),
                     url: None,
                     script: None,
                     metrics: ServiceStatesProbeNodeReplicaMetrics::default(),

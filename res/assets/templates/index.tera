@@ -151,7 +151,11 @@
                 <div class="node">
                   {% for replica_id, replica in node.replicas %}
                     <span class="replica status-{{ replica.status | escape }}-background has-tooltip font-sans-semibold">
-                      {{ loop.index }}
+                      {% if replica.label %}
+                        {{ replica.label }}
+                      {% else %}
+                        {{ loop.index }}
+                      {% endif %}
 
                       <span class="tooltip">
                         <span class="tooltip-value">
